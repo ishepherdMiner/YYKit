@@ -1596,7 +1596,7 @@ CGImageRef YYCGImageCreateWithWebPData(CFDataRef webpData,
 }
 
 #pragma private (wrap)
-
+// 学到一点如果是私有的封装比如像这里,方法的命名可以用_原方法名,表示内部的含义,Apple的很多方法是__开头的
 - (BOOL)_updateData:(NSData *)data final:(BOOL)final {
     if (_finalized) return NO;
     if (data.length < _data.length) return NO;
@@ -1620,6 +1620,7 @@ CGImageRef YYCGImageCreateWithWebPData(CFDataRef webpData,
     return YES;
 }
 
+// 图片动画的关键在这里?
 - (YYImageFrame *)_frameAtIndex:(NSUInteger)index decodeForDisplay:(BOOL)decodeForDisplay {
     if (index >= _frames.count) return 0;
     _YYImageDecoderFrame *frame = [(_YYImageDecoderFrame *)_frames[index] copy];

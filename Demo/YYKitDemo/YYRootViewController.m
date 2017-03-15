@@ -9,6 +9,9 @@
 #import "YYRootViewController.h"
 #import "YYKit.h"
 
+
+// 动态生成,不引入头文件
+
 @interface YYRootViewController ()
 @property (nonatomic, strong) NSMutableArray *titles;
 @property (nonatomic, strong) NSMutableArray *classNames;

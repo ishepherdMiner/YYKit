@@ -12,7 +12,7 @@
 #import "YYThreadSafeArray.h"
 #import "NSArray+YYAdd.h"
 
-
+// 添加了锁,保证线程安全
 #define INIT(...) self = super.init; \
 if (!self) return nil; \
 __VA_ARGS__; \

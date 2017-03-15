@@ -21,6 +21,10 @@
 @implementation YYBook
 @end
 
+/// YYModel
+/// 直接调用objc_msgSend(id,SEL)
+/// 比消息发送方式赋值省了一步,会快
+
 static void SimpleObjectExample() {
     YYBook *book = [YYBook modelWithJSON:@"     \
     {                                           \

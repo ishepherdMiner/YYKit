@@ -627,6 +627,8 @@ static force_inline id YYValueForMultiKeys(__unsafe_unretained NSDictionary *dic
 /// Returns the cached model class meta
 + (instancetype)metaWithClass:(Class)cls {
     if (!cls) return nil;
+    
+    // 信号量
     static CFMutableDictionaryRef cache;
     static dispatch_once_t onceToken;
     static dispatch_semaphore_t lock;
@@ -1118,7 +1120,9 @@ static void ModelSetWithDictionaryFunction(const void *_key, const void *_value,
     __unsafe_unretained _YYModelPropertyMeta *propertyMeta = [meta->_mapper objectForKey:(__bridge id)(_key)];
     __unsafe_unretained id model = (__bridge id)(context->model);
     while (propertyMeta) {
+        // 找setter方法
         if (propertyMeta->_setter) {
+            // 设值
             ModelSetValueForProperty(model, (__bridge __unsafe_unretained id)_value, propertyMeta);
         }
         propertyMeta = propertyMeta->_next;
@@ -1160,9 +1164,12 @@ static void ModelSetWithPropertyMetaArrayFunction(const void *_propertyMeta, voi
  @return JSON object, nil if an error occurs.
  */
 static id ModelToJSONObjectRecursive(NSObject *model) {
+    
+    // 直接返回
     if (!model || model == (id)kCFNull) return model;
     if ([model isKindOfClass:[NSString class]]) return model;
     if ([model isKindOfClass:[NSNumber class]]) return model;
+    
     if ([model isKindOfClass:[NSDictionary class]]) {
         if ([NSJSONSerialization isValidJSONObject:model]) return model;
         NSMutableDictionary *newDic = [NSMutableDictionary new];
@@ -1207,7 +1214,7 @@ static id ModelToJSONObjectRecursive(NSObject *model) {
     if ([model isKindOfClass:[NSDate class]]) return [YYISODateFormatter() stringFromDate:(id)model];
     if ([model isKindOfClass:[NSData class]]) return nil;
     
-    
+    // 模型不是上面的那些系统类型
     _YYModelMeta *modelMeta = [_YYModelMeta metaWithClass:[model class]];
     if (!modelMeta || modelMeta->_keyMappedCount == 0) return nil;
     NSMutableDictionary *result = [[NSMutableDictionary alloc] initWithCapacity:64];
@@ -1219,7 +1226,11 @@ static id ModelToJSONObjectRecursive(NSObject *model) {
         if (propertyMeta->_isCNumber) {
             value = ModelCreateNumberFromProperty(model, propertyMeta);
         } else if (propertyMeta->_nsType) {
+            
+            // 编译时是用objc_msgSend()函数
+            // id (*)(id,SEL) 应该是强转,要调用实际的objc_msgSend(id,SEL)这个函数
             id v = ((id (*)(id, SEL))(void *) objc_msgSend)((id)model, propertyMeta->_getter);
+            
             value = ModelToJSONObjectRecursive(v);
         } else {
             switch (propertyMeta->_type & YYEncodingTypeMask) {
@@ -1493,6 +1504,7 @@ static NSString *ModelDescription(NSObject *model) {
     context.dictionary = (__bridge void *)(dic);
     
     if (modelMeta->_keyMappedCount >= CFDictionaryGetCount((CFDictionaryRef)dic)) {
+        // 字典转模型,对字典(dic)中的每个值调用一次函数(ModelSetWithDictionaryFunction)。
         CFDictionaryApplyFunction((CFDictionaryRef)dic, ModelSetWithDictionaryFunction, &context);
         if (modelMeta->_keyPathPropertyMetas) {
             CFArrayApplyFunction((CFArrayRef)modelMeta->_keyPathPropertyMetas,

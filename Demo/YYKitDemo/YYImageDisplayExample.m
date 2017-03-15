@@ -49,6 +49,7 @@
 
 - (void)addImageWithName:(NSString *)name text:(NSString *)text {
     YYImage *image = [YYImage imageNamed:name];
+    [image setPreloadAllAnimatedImageFrames:true];
     [self addImage:image size:CGSizeZero text:text];
 }
 

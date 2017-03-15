@@ -30,14 +30,14 @@
 #define kWBCellToolbarBottomMargin 2 // cell 下方灰色留白
 
 // 字体 应该做成动态的，这里只是 Demo，临时写死了。
-#define kWBCellNameFontSize 16      // 名字字体大小
-#define kWBCellSourceFontSize 12    // 来源字体大小
-#define kWBCellTextFontSize 17      // 文本字体大小
+#define kWBCellNameFontSize 16        // 名字字体大小
+#define kWBCellSourceFontSize 12      // 来源字体大小
+#define kWBCellTextFontSize 17        // 文本字体大小
 #define kWBCellTextFontRetweetSize 16 // 转发字体大小
-#define kWBCellCardTitleFontSize 16 // 卡片标题文本字体大小
-#define kWBCellCardDescFontSize 12 // 卡片描述文本字体大小
-#define kWBCellTitlebarFontSize 14 // 标题栏字体大小
-#define kWBCellToolbarFontSize 14 // 工具栏字体大小
+#define kWBCellCardTitleFontSize 16   // 卡片标题文本字体大小
+#define kWBCellCardDescFontSize 12    // 卡片描述文本字体大小
+#define kWBCellTitlebarFontSize 14    // 标题栏字体大小
+#define kWBCellToolbarFontSize 14     // 工具栏字体大小
 
 // 颜色
 #define kWBCellNameNormalColor UIColorHex(333333) // 名字颜色

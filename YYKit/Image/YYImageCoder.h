@@ -95,11 +95,17 @@ typedef NS_ENUM(NSUInteger, YYImageBlendOperation) {
 
 /**
  An image decoder to decode image data.
+ 图片主要还是这个类吧
  
  @discussion This class supports decoding animated WebP, APNG, GIF and system
  image format such as PNG, JPG, JP2, BMP, TIFF, PIC, ICNS and ICO. It can be used 
  to decode complete image data, or to decode incremental image data during image 
  download. This class is thread-safe.
+ 
+ 这个类支持解码动画WebP，APNG，GIF和系统
+ 图像格式，如PNG，JPG，JP2，BMP，TIFF，PIC，ICNS和ICO。它可以使用
+ 以解码完整图像数据，或在图像期间解码增量图像数据
+ 下载。这个类是线程安全的。
  
  Example:
  

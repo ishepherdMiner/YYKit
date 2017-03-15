@@ -43,6 +43,7 @@
     }
     if (path.length == 0) return nil;
     
+    // 根据路径读取二进制NSData
     NSData *data = [NSData dataWithContentsOfFile:path];
     if (data.length == 0) return nil;
     
@@ -82,9 +83,14 @@
         self = [self initWithCGImage:image.CGImage scale:decoder.scale orientation:image.imageOrientation];
         if (!self) return nil;
         _animatedImageType = decoder.type;
+        
+        // 不只一帧,动态图
         if (decoder.frameCount > 1) {
             _decoder = decoder;
+            // 每一帧的比特数 = 每一行的比特数 X 图片的高度
             _bytesPerFrame = CGImageGetBytesPerRow(image.CGImage) * CGImageGetHeight(image.CGImage);
+            
+            // 动画消耗的内存大小 = 每一帧的比特数 X 帧数
             _animatedImageMemorySize = _bytesPerFrame * decoder.frameCount;
         }
         self.isDecodedForDisplay = YES;
@@ -96,6 +102,7 @@
     return _decoder.data;
 }
 
+// 预加载动画帧
 - (void)setPreloadAllAnimatedImageFrames:(BOOL)preloadAllAnimatedImageFrames {
     if (_preloadAllAnimatedImageFrames != preloadAllAnimatedImageFrames) {
         if (preloadAllAnimatedImageFrames && _decoder.frameCount > 0) {
